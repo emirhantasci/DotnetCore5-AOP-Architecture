@@ -1,0 +1,34 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using VirtualTicket.Business.Abstract;
+
+namespace VirtualTicket.WebApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class XQPreferenceController : ControllerBase
+    {
+        private IXQPreferenceService _xqPreferenceService;
+        public XQPreferenceController(IXQPreferenceService XQPreferenceService)
+        {
+            _xqPreferenceService = XQPreferenceService;
+        }
+
+        [HttpGet("getBranchList")]
+        public IActionResult GetBranchList()
+        {
+            var result = _xqPreferenceService.GetBranchList();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+    }
+}

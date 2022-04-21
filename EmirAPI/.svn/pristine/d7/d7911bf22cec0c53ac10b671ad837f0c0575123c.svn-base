@@ -1,0 +1,4 @@
+{
+  "CustomerMaxWaitingTime": "10",
+  "TryingCountOnError": 3
+}

@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace VirtualTicket.Agent.Concreat
+{
+    public class TempMessage
+    {
+        public string MeessageId { get; set; }
+        public int TryingCount { get; set; }
+    }
+
+}

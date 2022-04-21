@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace VirtualTicket.Agent.Utility
+{
+    public interface ILogger
+    {
+        bool IsDebugEnabled { get; }
+        bool IsErrorEnabled { get; }
+        bool IsFatalEnabled { get; }
+        bool IsInfoEnabled { get; }
+        bool IsWarnEnabled { get; }
+
+        void Debug(string logMessage);
+        void Error(string logMessage);
+        void Fatal(string logMessage);
+        void Warn(string logMessage);
+        void Info(string logMessage);
+      
+      
+    }
+}

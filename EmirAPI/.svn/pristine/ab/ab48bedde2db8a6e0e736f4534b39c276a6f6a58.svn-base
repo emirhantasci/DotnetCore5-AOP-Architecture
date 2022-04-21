@@ -1,0 +1,73 @@
+﻿using Experimental.System.Messaging;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VirtualTicket.Business.Abstract;
+using VirtualTicket.Business.Constants;
+using VirtualTicket.Core.Aspects.Autofac.Exception;
+using VirtualTicket.Core.Aspects.Autofac.Logging;
+using VirtualTicket.Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
+using VirtualTicket.Core.Utilities.Results;
+using VirtualTicket.Entities.Dtos;
+
+namespace VirtualTicket.Business.Concrete
+{
+    [LogAspect(typeof(FileLogger))]
+    [ExceptionLogAspect(typeof(FileLogger))]
+    public class RequestTicketManager: IRequestTicketService
+    {
+        public IDataResult<MessageQueue> ConnectTQueue(string MacineName, string QueueName)
+        {
+            MessageQueue _messageQueue = null;
+
+            MessageQueue[] MessageQueues = MessageQueue.GetPrivateQueuesByMachine(MacineName);
+
+            if (MessageQueues != null && MessageQueues.Count() > 0)
+                _messageQueue = MessageQueues.FirstOrDefault(x => x.QueueName.Equals(QueueName, StringComparison.OrdinalIgnoreCase));
+
+            return new SuccessDataResult<MessageQueue>(_messageQueue);
+        }
+        public IDataResult<string > SendMessageToQueue<T>(MessageQueue messageQueue, T Message, string Label)
+        {
+            using (var messageQueueTransaction = new MessageQueueTransaction())
+            {
+                using (var queue = messageQueue)
+                {
+                    messageQueue.DefaultPropertiesToSend.Recoverable = true;
+                  
+                    messageQueueTransaction.Begin();
+                    messageQueue.Send(Message, Label, messageQueueTransaction);
+                    messageQueueTransaction.Commit();
+                }
+            }
+            return new SuccessDataResult<string>(Label);
+        }
+
+        public IDataResult<string> CreateTicketRequest( TicketRequestDto Model)
+        {
+            TicketRequestWithCreateTimeDro _dto = new TicketRequestWithCreateTimeDro
+            {
+                BranchNo = Model.BranchNo,
+                CardNo = Model.CardNo,
+                PhoneNo = Model.PhoneNo,
+                ButtonNumber = Model.ButtonNumber,
+                CreateTime = DateTime.Now,
+            };
+
+            IDataResult<MessageQueue> _result = ConnectTQueue(Environment.MachineName.ToString(), "private$\\" + Model.BranchNo);
+
+            if (_result.Success && _result.Data != null)
+            {
+                string messageLabel = string.Format("TicketRequest {0}", Model.PhoneNo + "_" + Model.BranchNo + "_" + _dto.CreateTime.ToString());
+                string Json = JsonConvert.SerializeObject(_dto);
+                byte[] bytes = Encoding.ASCII.GetBytes(Json);
+
+                return   SendMessageToQueue(_result.Data, Json, messageLabel);
+            }
+            return new ErrorDataResult<string >(Messages.TicketRequestError);
+        }
+    }
+}

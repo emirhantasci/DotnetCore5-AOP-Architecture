@@ -1,0 +1,49 @@
+﻿using Experimental.System.Messaging;
+using HmacAuthentication.Hmac;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VirtualTicket.Business.Abstract;
+using VirtualTicket.Core.Utilities.Results;
+using VirtualTicket.Entities.Dtos;
+
+
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+namespace VirtualTicket.WebApi.Controllers
+{
+   
+ 
+    [Consumes("application/json")]
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TicketRequestController : ControllerBase
+    {
+
+        private IRequestTicketService _requestTicketService;
+        public TicketRequestController(IRequestTicketService RequestTicketService)
+        {
+            _requestTicketService = RequestTicketService;
+        }
+
+
+        [Authorize(AuthenticationSchemes = HmacAuthenticationDefaults.AuthenticationScheme)]
+        [HttpPost("createTicketRequest")]
+        public IActionResult CreateTicketRequest([FromBody] TicketRequestModel Model)
+        {
+            var result = _requestTicketService.CreateTicketRequest(Model);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+    }
+}

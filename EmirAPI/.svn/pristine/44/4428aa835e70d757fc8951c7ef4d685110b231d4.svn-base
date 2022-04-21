@@ -1,0 +1,110 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VirtualTicket.Core.Entities;
+
+namespace VirtualTicket.Entities.Concrete
+{
+    public class xQPreference : IEntity
+    {
+
+        [Key]
+        [Column("BRANCHCODE")]
+        public Int16 BranchCode { get; set; }
+
+        [Column("BRANCHNAME")]
+        public string? BranchName { get; set; }
+
+        [Column("AUTOSYSTEMRESET")]
+        public string? AutoSystemReset { get; set; }
+
+        [Column("DAILIYRESETTIME")]
+        public string? DailiyResetTime { get; set; }
+
+        [Column("LASTSYSTEMRESET")]
+        public DateTime? LastSystemReset { get; set; }
+
+        [Column("USERLOGINREQUIRED")]
+        public string? UserLoginRequried { get; set; }
+
+        [Column("VIPCONNECTIONSTRING")]
+        public string? VipConnectionString { get; set; }
+
+        [Column("VIPSQL")]
+        public string? VipSql { get; set; }
+
+        [Column("CALLVALIDTIMEOUT")]
+        public Int16? CallValidTimeOut { get; set; }
+
+        [Column("AUTOINFODISPLAYRUN")]
+        public string? AutoInfoDisplayRun { get; set; }
+
+        [Column("AUTOSYSTEMSHUTDOWNTIMEOUT")]
+        public Int16? AutoSystemShutDownTimeOut { get; set; }
+
+        [Column("MATRIXCALLFORMAT")]
+        public string? MatrixCallFormat { get; set; }
+
+        [Column("MATRIXCALLEFFECT")]
+        public Int16? MatrixCallEffect { get; set; }
+
+        [Column("MATRIXCALLDURATION")]
+        public Int16? MatrixCallDuration { get; set; }
+
+        [Column("LASTUPDATECOMPNAME")]
+        public string? LastUpdateCompName { get; set; }
+
+        [Column("VIPTCPSERVER")]
+        public string? VipCpServer { get; set; }
+
+        [Column("VIPTCPPORT")]
+        public Int16? VipCppost { get; set; }
+
+        [Column("MANAGERHOST")]
+        public string? ManagerHost { get; set; }
+
+        [Column("MANAGERPORT")]
+        public Int16? ManagerPort { get; set; }
+
+        [Column("WARNINGCHECKPERIOD")]
+        public Int16? WarningCheckPeriod { get; set; }
+
+        [Column("REPORTERPORT")]
+        public Int16? ReporterPort { get; set; }
+
+        [Column("FKXQREGION")]
+        public Int64? FkxqRegion { get; set; }
+
+        [Column("FKXQBRANCHTYPE")]
+        public Int64? FkxqBranchType { get; set; }
+
+        [Column("PROGRAMOPENTIME")]
+        public DateTime? ProgramOpenTime { get; set; }
+
+        [Column("PROGRAMCLOSETIME")]
+        public DateTime? ProgramCloseTime { get; set; }
+
+        [Column("LASTTRANSFERTIME")]
+        public DateTime? LastTransferTime { get; set; }
+
+        [Column("WARNINGOPERATIONSTATUS")]
+        public Byte? WarningOperationStatus { get; set; }
+
+        [Column("TRANSFERMINUTE")]
+        public Int16? TransferMinute { get; set; }
+
+        [Column("TRANSFERGROUPNO")]
+        public Int16? TransferGroupNo { get; set; }
+
+        [Column("WARNINGOPERATIONENABLE")]
+        public Byte? WarningOperationEnable { get; set; }
+
+        [Column("DISPLAYCLOSEMODE")]
+
+        public Int16? DisplayCloseMode { get; set; }
+    }
+}

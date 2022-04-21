@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace VirtualTicket.Core.Helpers
+{
+    public static class Constants
+    {
+        public const string XQManagerRegistryPath = @"SOFTWARE\WOW6432Node\XQ\XQManager";
+        public const string SmigRegistryPath = @"SOFTWARE\WOW6432Node\XQ\Smig";
+        public const string LastPackageIdKey = "LastPackageId";
+        public const string JWTSecretKey = "JWTSecretKey";
+        public const string EncryptionKey = "EncryptionKey";
+        public const string EncryptionIV = "EncryptionIV";
+        public const string UseEncryptionKey = "UseEncryption";
+    }
+}

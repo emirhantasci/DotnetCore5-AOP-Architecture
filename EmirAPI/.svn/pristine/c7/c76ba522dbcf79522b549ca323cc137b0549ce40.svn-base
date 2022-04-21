@@ -1,0 +1,122 @@
+﻿using log4net;
+using log4net.Repository;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
+
+namespace VirtualTicket.Agent.Utility
+{
+    public class Logger : ILogger
+    {
+        private ILog _log;
+      
+        public bool IsInfoEnabled => _log.IsInfoEnabled;
+        public bool IsDebugEnabled => _log.IsDebugEnabled;
+        public bool IsWarnEnabled => _log.IsWarnEnabled;
+        public bool IsFatalEnabled => _log.IsFatalEnabled;
+        public bool IsErrorEnabled => _log.IsErrorEnabled;
+
+        public Logger()
+        {
+           
+            string _logFileName = Path.Combine(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName), Constants.Constants.Log4netConfigFileName);
+
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.Load(File.OpenRead(_logFileName));
+            ILoggerRepository loggerRepository = LogManager.CreateRepository(Assembly.GetEntryAssembly(),
+                typeof(log4net.Repository.Hierarchy.Hierarchy));
+            log4net.Config.XmlConfigurator.Configure(loggerRepository, xmlDocument["log4net"]);
+            _log = LogManager.GetLogger(loggerRepository.Name, "Agent");
+        }
+        public void Debug(string logMessage)
+        {
+            try
+            {
+                if (IsDebugEnabled)
+                {
+                   
+                    _log.Debug(logMessage);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        public void Warn(string logMessage)
+        {
+            try
+            {
+                if (IsDebugEnabled)
+                {
+                    
+                    _log.Warn(logMessage);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        public void Fatal(string logMessage)
+        {
+            try
+            {
+                if (IsDebugEnabled)
+                {
+                 
+                    _log.Fatal(logMessage);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        public void Error(string logMessage)
+        {
+            try
+            {
+                if (IsErrorEnabled)
+                {
+                    
+                    _log.Error(logMessage);
+                }
+            }
+
+            catch
+            {
+
+            }
+        }
+
+        public void Info(string logMessage)
+        {
+            try
+            {
+                if (IsDebugEnabled)
+                {
+                   
+                    _log.Info(logMessage);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+     
+     
+       
+       
+    }
+}

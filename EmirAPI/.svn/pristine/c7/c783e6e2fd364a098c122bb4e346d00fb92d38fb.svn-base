@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace VirtualTicket.WebApi.Models
+{
+    public class TicketRequestModel
+    {
+        public string BranchNo { get; set; }
+        public string PhoneNo { get; set; }
+        public string ButtonNumber { get; set; }
+        public string CardNo { get; set; }
+        
+            
+    }
+}

@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VirtualTicket.Entities.Concrete;
+using VirtualTicket.Entities.Dtos;
+
+namespace VirtualTicket.Business.Abstract
+{
+    public interface ICommonService
+    {
+        List<BranchDto> ConvertListxQPreferenceToListBrancDto(List<xQPreference> xQPreferences);
+       
+    }
+}

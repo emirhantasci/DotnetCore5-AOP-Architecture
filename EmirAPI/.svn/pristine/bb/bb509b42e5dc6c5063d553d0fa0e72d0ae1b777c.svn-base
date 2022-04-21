@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VirtualTicket.Core.DataAccess;
+using VirtualTicket.Entities.Concrete;
+
+namespace VirtualTicket.DataAccess.Abstract
+{
+    public interface IXQPreferenceDal : IEntityRepository<xQPreference>
+    {
+    }
+}
+

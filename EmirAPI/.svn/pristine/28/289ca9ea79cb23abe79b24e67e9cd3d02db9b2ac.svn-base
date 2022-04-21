@@ -1,0 +1,29 @@
+﻿using Experimental.System.Messaging;
+using Newtonsoft.Json;
+using SubcribOrderRequeQueue.Concreat;
+using SubcribOrderRequeQueue.Helper;
+using SubcribOrderRequeQueue.Models;
+using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml;
+
+namespace SubcribOrderRequeQueue
+{
+    class Program
+    {
+     
+
+        static void Main(string[] args)
+        {
+            Processor _prososor = new Processor();
+            _prososor.Start();
+            while (Console.ReadLine() != "1")
+            {
+                Thread.Sleep(100);
+            }
+        }
+
+    }
+}

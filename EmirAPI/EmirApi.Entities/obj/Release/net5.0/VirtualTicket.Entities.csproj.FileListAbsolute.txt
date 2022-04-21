@@ -1,0 +1,15 @@
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\bin\Release\net5.0\VirtualTicket.Entities.deps.json
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\bin\Release\net5.0\VirtualTicket.Entities.dll
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\bin\Release\net5.0\ref\VirtualTicket.Entities.dll
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\bin\Release\net5.0\VirtualTicket.Entities.pdb
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\bin\Release\net5.0\VirtualTicket.Core.dll
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\bin\Release\net5.0\VirtualTicket.Core.pdb
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\obj\Release\net5.0\VirtualTicket.Entities.csproj.AssemblyReference.cache
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\obj\Release\net5.0\VirtualTicket.Entities.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\obj\Release\net5.0\VirtualTicket.Entities.AssemblyInfoInputs.cache
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\obj\Release\net5.0\VirtualTicket.Entities.AssemblyInfo.cs
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\obj\Release\net5.0\VirtualTicket.Entities.csproj.CoreCompileInputs.cache
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\obj\Release\net5.0\VirtualTicket.Entities.csproj.CopyComplete
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\obj\Release\net5.0\VirtualTicket.Entities.dll
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\obj\Release\net5.0\ref\VirtualTicket.Entities.dll
+C:\Users\etasci\Desktop\VirtualTicket\VirtualTicket.Entities\obj\Release\net5.0\VirtualTicket.Entities.pdb

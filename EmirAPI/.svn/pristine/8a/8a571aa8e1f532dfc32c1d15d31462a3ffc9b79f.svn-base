@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VirtualTicket.Business.Abstract;
+using VirtualTicket.Core.Aspects.Autofac.Exception;
+using VirtualTicket.Core.Aspects.Autofac.Logging;
+using VirtualTicket.Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
+using VirtualTicket.Entities.Concrete;
+using VirtualTicket.Entities.Dtos;
+using VirtualTicket.Entities.Concrete;
+using VirtualTicket.Entities.Dtos;
+
+namespace VirtualTicket.Business.Concrete
+{
+    [LogAspect(typeof(FileLogger))]
+    [ExceptionLogAspect(typeof(FileLogger))]
+    public class CommonManager : ICommonService
+    {
+        public List<BranchDto> ConvertListxQPreferenceToListBrancDto(List<xQPreference> xQPreferences)
+        {
+            var branchDtos = new List<BranchDto>();
+
+            foreach (var xQPreference in xQPreferences)
+            {
+                var branchDto = new BranchDto
+                {
+                    BranchCode = xQPreference.BranchCode,
+                    BranchName = xQPreference.BranchName,
+                    FkxqBranchType = xQPreference.FkxqBranchType,
+                    FkxqRegion = xQPreference.FkxqRegion,
+                    Ip = xQPreference.ManagerHost,
+                };
+                branchDtos.Add(branchDto);
+            }
+
+            return branchDtos;
+        }
+    }
+}

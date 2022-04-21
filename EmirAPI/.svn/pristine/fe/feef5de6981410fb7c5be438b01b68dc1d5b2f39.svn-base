@@ -1,0 +1,188 @@
+﻿using Experimental.System.Messaging;
+using Newtonsoft.Json;
+
+using SubcribOrderRequeQueue.Helper;
+using SubcribOrderRequeQueue.Models;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml;
+using VirtualTicket.Agent.Helper;
+using VirtualTicket.Agent.Utility;
+
+namespace SubcribOrderRequeQueue.Concreat
+{
+    public class Processor
+    {
+        HttpRequestHelper _helper = new HttpRequestHelper();
+        CommonHelper _commonHelper;
+        Logger _logger;
+        public Processor()
+        {
+            _logger = new Logger();
+            _commonHelper = new CommonHelper(_logger);
+        }
+        public void Start()
+        {
+            string _machineName = Environment.MachineName;
+            LogInfo("Agent Started");
+            MessageQueue[] MessageQueues = MessageQueue.GetPrivateQueuesByMachine(_machineName);
+
+            for (int _counter = 0; _counter <= MessageQueues.Length - 1; _counter++)
+            {
+                MessageQueue messageQueue = MessageQueues[_counter];
+                LogInfo(messageQueue.Path + " dinlenecek");
+                Task t = Task.Run(() => Receive(messageQueue));
+            }
+           
+        }
+       
+        public void Receive(MessageQueue messageQueue)
+        {
+            while (true)
+            {
+                var messageQueueTransaction = new MessageQueueTransaction();
+                try
+                {
+                 
+                    messageQueueTransaction.Begin();
+                    Message m = messageQueue.Receive(messageQueueTransaction);
+
+                    string messageBody = "";
+                    StreamReader sr = new StreamReader(m.BodyStream);
+                    while (sr.Peek() >= 0)
+                    {
+                        messageBody += sr.ReadToEnd();
+                    }
+
+                    LogInfo("messageBody = "+ messageBody);
+                    TicketRequestModel _model= GetTicketRequestModel(messageBody);
+                    string _ip = GetIp(_model.BranchNo);
+                    Task<RequestResult> _tdHttpResult = SendToTdHttpRequest(_model.BranchNo, _ip, _model.ButtonNumber, _model.CardNo);
+                    _tdHttpResult.Wait();
+                    if (_tdHttpResult.Result.ResultCode == 0)
+                    {
+                        bool _sendSms = SendSms(_model.PhoneNo, _model.BranchNo, _tdHttpResult.Result.TicketNumber.ToString(), _model.ButtonNumber);
+                        if (_sendSms)
+                            CommitTransactiom(messageQueueTransaction);
+                        else
+                            messageQueueTransaction.Abort();
+                    }
+                    else
+                        AbortTransactiom(messageQueueTransaction);
+
+                }
+                catch (Exception ex)
+                {
+                    AbortTransactiom(messageQueueTransaction);
+                   
+                }
+
+            }
+
+        }private void CommitTransactiom(MessageQueueTransaction Transaction)
+        {
+            try
+            {
+                Transaction.Commit();
+                LogInfo("Transaction "+ Transaction.Status.ToString());
+            }
+            catch (Exception ex)
+            {
+                LogError(ex.ToString());
+            }
+
+        }
+
+        private void AbortTransactiom(MessageQueueTransaction Transaction)
+        {
+            try
+            {
+                Transaction.Abort();
+                LogInfo("Aborted");
+            }
+            catch (Exception ex)
+            {
+                LogError(ex.ToString());
+            }
+
+        }
+
+        private TicketRequestModel GetTicketRequestModel(string MSMQMessage)
+        {
+            TicketRequestModel _model = null;
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(MSMQMessage);
+                XmlNodeList xnList = doc.SelectNodes("/string");
+                string json = JsonConvert.SerializeXmlNode(doc);
+                var charsToRemove = new string[] { @"\" };
+                foreach (var c in charsToRemove)
+                {
+                    json = xnList[0].InnerText.Replace(c, string.Empty);
+                }
+                _model = JsonConvert.DeserializeObject<TicketRequestModel>(json);
+            }
+            catch (Exception ex)
+            {
+                LogError(ex.ToString());
+            }
+            return _model;
+        }
+        public async Task<RequestResult> SendToTdHttpRequest(string BranchNo, string Ip,string ButtonNo,string CardNo)
+        {
+            string _result = "";
+            RequestResult _tdHttpResult = null;
+            try
+            {
+                string _deviceId = "2001";
+                _result = await _helper.SendRequesAsyct(BranchNo, Ip + ":90/td", "RQSTCK", "&DeviceId="+ _deviceId + "&ButtonNumber="+ButtonNo+ "&CardNo="+CardNo+"&PhysicalButtonNo="+ ButtonNo);
+                XmlDocument _doc = _helper.StringToXml("1", _result);
+                RequestResult _return = _helper.ParseXmlDoc(_doc, "RQSTCK");
+                if (_return.ResultCode == 0 && _return.ErrorMsg == 0)
+                {
+                    _tdHttpResult = _return;
+                }
+                LogInfo("TdHttpResult = " + _return.ResultCode);
+            }
+            catch (Exception ex)
+            {
+                LogError(ex.ToString());
+            }
+            LogInfo("TdHttpResult = " + _result);
+            return _tdHttpResult;
+        }
+
+        public  string GetIp(string BranchCode)
+        {
+            LogInfo("Ip = " + "127.0.0.1");
+            return "127.0.0.1";
+        }
+        public bool SendSms(string PhoneNumber,string BranchCode, string TicketNumber,string ButtonNo)
+        {
+            LogInfo("SendSms = Bankamzın "+ BranchCode+ " nolu şubesinde buton no "+ ButtonNo +" için üretilen bilet numarası "+ TicketNumber+" dir. "+ PhoneNumber +" numarasına SMS olarak yollanmıştır.");
+            return true;
+        }
+        private void LogInfo(string Message)
+        {
+          
+            _commonHelper.LogInfo(Message); ;
+        }
+        private void LogError(string Message)
+        {
+            _commonHelper.LogError(Message); ;
+        }
+        private void LogDebug(string Message)
+        {
+            _commonHelper.LogDebug(Message); ;
+        }
+
+
+
+
+    }
+}

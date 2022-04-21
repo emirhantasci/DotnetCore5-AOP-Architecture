@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VirtualTicket.Agent.Utility;
+
+namespace VirtualTicket.Agent.Helper
+{
+    public class CommonHelper
+    {
+        ILogger _logger;
+        public CommonHelper(ILogger Logger)
+        {
+            _logger = Logger;
+        }
+            public void LogInfo(string Message)
+        {
+            _logger.Info(Message); ;
+        }
+        public void LogError(string Message)
+        {
+            _logger.Error(Message); ;
+        }
+        public void LogDebug(string Message)
+        {
+            _logger.Debug(Message); ;
+        }
+        
+    }
+}

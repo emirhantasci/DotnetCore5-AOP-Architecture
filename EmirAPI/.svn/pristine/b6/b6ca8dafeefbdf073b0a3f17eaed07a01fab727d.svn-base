@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace SubcribOrderRequeQueue.Models
+{
+    public class TicketRequestWithCreateTimeDro
+    {
+        public string BranchNo { get; set; }
+        public string PhoneNo { get; set; }
+        public string ButtonNumber { get; set; }
+        public string CardNo { get; set; }
+        public DateTime CreateTime { get; set; }
+    }
+}

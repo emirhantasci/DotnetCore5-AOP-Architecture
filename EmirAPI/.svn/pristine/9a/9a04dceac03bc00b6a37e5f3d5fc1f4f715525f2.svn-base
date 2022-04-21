@@ -1,0 +1,16 @@
+﻿using Experimental.System.Messaging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VirtualTicket.Core.Utilities.Results;
+using VirtualTicket.Entities.Dtos;
+
+namespace VirtualTicket.Business.Abstract
+{
+   public interface IRequestTicketService
+    {
+        IDataResult<string > CreateTicketRequest(TicketRequestModel Model);
+    }
+}

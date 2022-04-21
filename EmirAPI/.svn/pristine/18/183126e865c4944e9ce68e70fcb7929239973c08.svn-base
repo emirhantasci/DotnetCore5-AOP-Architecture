@@ -1,0 +1,25 @@
+{
+  "ConnectionStrings": {
+    //Original
+    //"IndMonConnection": "Data Source=10.16.66.233;Initial Catalog=AppUpdtr;uid=xq;pwd=Pxqp1000",
+    //"XQConnection": "Data Source=10.16.66.233;Initial Catalog=xq;uid=xq;pwd=Pxqp1000"
+
+    //ArgeSqlServer
+    "IndMonConnection": "F2q7bdT2ocgkyDyvA5YB4dHVG2xckM26F4OhQJO43ue0iAMO7ArfS1+xTJOg0XjsqUKtm/KDi8N/uivx0mYZfAdSukUvB2uko/hO88IkMwM=",
+    "XQConnection": "F2q7bdT2ocgkyDyvA5YB4dHVG2xckM26F4OhQJO43uddeisAfbw79deqiSaC+k74oVF2EsCs9bmko7FGeZ/H1g=="
+
+    //Davut's .\sqlexpress
+    //"IndMonConnection": "s12kWHQatf7hcLVOvqYeiUY0yZIcrHur2VnfqumDOlDgebh7TtYEYecxfCcVWrFiJi/Mukaf4GC/qhR46qwWdrIC3yBFu7OJV8Pwm+D4urg=",
+    //"XQConnection": "s12kWHQatf7hcLVOvqYeiUY0yZIcrHur2VnfqumDOlA+9K2MDAGtDXEuN6Hdf5dKVc85ri7xch8sbg15GHjFHA=="
+  },
+  "AccessTokenExpiration": 10,
+  "DormantDuration": 15,
+  "ModuleName": "webrep",
+  "AllowedHosts": "*",
+  "ITSMLoginAddress": "http://10.45.135.10:8008/api/jwt/login",
+  "ITSMAddIncedentAddress": "http://10.45.135.10:8008/api/arsys/v1/entry/HPD:IncidentInterface_Create?fields=values(Incident Number)",
+  "ITSMUserName": "YWDzOzIHJMA/3/FYIb3IaA==",
+  "ITSMPassword": "YWDzOzIHJMA/3/FYIb3IaA==",
+  "ITSMRequestTryingCount": "3",
+  "ITSMDetailedDecription": "Þube Kodu : {0} olan þubede {1} hatasý oluþtu. Olay tipi : {2}"
+}

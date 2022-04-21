@@ -1,0 +1,70 @@
+﻿using Microsoft.Extensions.Configuration;
+using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VirtualTicket.Agent.Utility;
+
+
+
+namespace VirtualTicket.Agent.Helper
+{
+    public class CommonHelper
+    {
+        IConfiguration configuration;
+        ILogger _logger;
+        public CommonHelper(ILogger Logger)
+        {
+            _logger = Logger;
+            var builder = new ConfigurationBuilder()
+  .SetBasePath(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName))
+  .AddJsonFile(Constants.Constants.AppSettingsFileName);
+            configuration = builder.Build();
+           
+        }
+        public int GetCustomerMaxWaitingTime()
+        {
+            int _result = -1;
+            try
+            {
+                _result = Convert.ToInt32(configuration["CustomerMaxWaitingTime"]);
+                LogInfo("Müşterinin maksimım bekleme süresi = " + _result.ToString());
+            }
+            catch (Exception ex)
+            {
+                LogError(ex.ToString());
+            }
+            return _result;
+        }
+        public int GetTryingCountOnError()
+        {
+            int _result = -1;
+            try
+            {
+                _result = Convert.ToInt32(configuration["TryingCountOnError"]);
+                LogInfo("Hata durumunda deneme sayısı = " + _result.ToString());
+            }
+            catch (Exception ex)
+            {
+                LogError(ex.ToString());
+            }
+            return _result;
+        }
+        public void LogInfo(string Message)
+        {
+            _logger.Info(Message); ;
+        }
+        public void LogError(string Message)
+        {
+            _logger.Error(Message); ;
+        }
+        public void LogDebug(string Message)
+        {
+            _logger.Debug(Message); ;
+        }
+        
+    }
+}

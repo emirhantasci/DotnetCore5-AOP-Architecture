@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VirtualTicket.Business.Abstract;
+using VirtualTicket.Core.Aspects.Autofac.Exception;
+using VirtualTicket.Core.Aspects.Autofac.Logging;
+using VirtualTicket.Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
+using VirtualTicket.Core.Utilities.Results;
+using VirtualTicket.DataAccess.Abstract;
+using VirtualTicket.Entities.Concrete;
+using VirtualTicket.Entities.Dtos;
+
+
+namespace VirtualTicket.Business.Concrete
+{
+    [LogAspect(typeof(FileLogger))]
+    [ExceptionLogAspect(typeof(FileLogger))]
+    public class XQPreferenceManager : IXQPreferenceService
+    {
+        private IXQPreferenceDal _xQPreferencDal;
+        ICommonService _commonService;
+        public XQPreferenceManager(IXQPreferenceDal xQPreferencDal, ICommonService CommonService)
+        {
+            _commonService = CommonService;
+            _xQPreferencDal = xQPreferencDal;
+        }
+        public IDataResult<List<BranchDto>> GetBranchList()
+        {
+            List<BranchDto> _list = _commonService.ConvertListxQPreferenceToListBrancDto(GetList().Data);
+            return new SuccessDataResult<List<BranchDto>>(_list);
+        }
+        public IDataResult<xQPreference> GetByBranchCode(short branchCode)
+        {
+            return new SuccessDataResult<xQPreference>(_xQPreferencDal.Get(x => x.BranchCode == branchCode));
+        }
+
+        public IDataResult<List<xQPreference>> GetList()
+        {
+            return new SuccessDataResult<List<xQPreference>>(_xQPreferencDal.GetList().Where(x => !((x.BranchCode >= 1 && x.BranchCode <= 120) || (x.BranchCode > 899 && x.BranchCode < 1000))).ToList());
+        }
+
+        public IDataResult<List<xQPreference>> GetListByFkxqRegion(long fkxqRegion)
+        {
+            return new SuccessDataResult<List<xQPreference>>(_xQPreferencDal.GetList(x => x.FkxqRegion == fkxqRegion).ToList());
+        }
+    }
+}

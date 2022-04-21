@@ -1,0 +1,90 @@
+﻿using Experimental.System.Messaging;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using VirtualTicket.WebApi.Models;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+namespace VirtualTicket.WebApi.Controllers
+{
+   
+ 
+    [Consumes("application/json")]
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TicketRequestController : ControllerBase
+    {
+        public virtual MessageQueue ConnectTQueue(string MacineName, string QueueName)
+        {
+            MessageQueue _messageQueue = null;
+            try
+
+            {
+
+                /*
+                 for (int i = 11; i <= 99; i++)
+                 {
+                   MessageQueue.Delete("skonyali\\private$\\" + i.ToString());
+                //   MessageQueue _queue= MessageQueue.Create("skonyali\\private$\\"+i.ToString(),,true);
+
+                 }
+                */
+
+                MessageQueue[] MessageQueues = MessageQueue.GetPrivateQueuesByMachine(MacineName);
+
+                if (MessageQueues != null && MessageQueues.Count() > 0)
+                    _messageQueue = MessageQueues.FirstOrDefault(x => x.QueueName.Equals(QueueName, StringComparison.OrdinalIgnoreCase));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return _messageQueue;
+
+        }
+        public virtual void  SendMessageToQueue<T> (MessageQueue messageQueue,T Message,string Label)
+        {
+             using(var messageQueueTransaction =new MessageQueueTransaction())
+            {
+                try
+                {
+                    using (var queue = messageQueue)
+                    {
+                        messageQueue.DefaultPropertiesToSend.Recoverable=true;
+                        messageQueueTransaction.Begin();
+                        messageQueue.Send(Message, Label, messageQueueTransaction);
+                        messageQueueTransaction.Commit();
+                    }
+
+                }
+                catch(Exception ex)
+                {
+                    messageQueueTransaction.Abort();
+                }
+            }
+        }
+     
+      
+        [HttpPost("createTicketRequest")]
+        public void CreateTicketRequest([FromBody] TicketRequestModel Model)
+        {
+            MessageQueue messageQueue = this.ConnectTQueue(Environment.MachineName.ToString(), "private$\\" + Model.BranchNo);
+            if (messageQueue!=null)
+            {
+                string messageLabel = string.Format("TicketRequest {0}", Model.PhoneNo+"_"+ Model.BranchNo+"_"+DateTime.Now.ToString());
+                string Json = JsonConvert.SerializeObject(Model);
+                byte[] bytes = Encoding.ASCII.GetBytes(Json);
+               
+                this.SendMessageToQueue(messageQueue, Json, messageLabel);
+            }
+        }
+
+    }
+}

@@ -1,0 +1,47 @@
+﻿using Experimental.System.Messaging;
+using Newtonsoft.Json;
+using SubcribOrderRequeQueue.Concreat;
+using SubcribOrderRequeQueue.Helper;
+using SubcribOrderRequeQueue.Models;
+using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml;
+using Topshelf;
+using VirtualTicket.Agent.Concreat;
+
+namespace SubcribOrderRequeQueue
+{
+    class Program
+    {
+     
+
+        static void Main(string[] args)
+        {
+            HostFactory.Run(hostConfig =>
+            {
+                hostConfig.Service<AgentServiceHost>(serviceConfig =>
+                {
+                    serviceConfig.ConstructUsing(() => new AgentServiceHost());
+                    serviceConfig.WhenStarted(s => s.Start());
+                    serviceConfig.WhenStopped(s => s.Stop());
+                });
+                hostConfig.RunAsLocalSystem();
+                hostConfig.SetServiceName("TumsasAppUpdtrAgent");
+                hostConfig.SetDisplayName("Tümsaş Application Updater Agent");
+                hostConfig.SetDescription("Tümsaş Application Updater Agent");
+
+            });
+            /*
+            Processor _prososor = new Processor();
+            _prososor.Start();
+            while (Console.ReadLine() != "1")
+            {
+                Thread.Sleep(100);
+            }
+            */
+        }
+
+    }
+}

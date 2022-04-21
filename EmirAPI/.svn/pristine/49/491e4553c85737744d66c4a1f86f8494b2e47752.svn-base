@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VirtualTicket.Core.DataAccess.EntityFramework;
+using VirtualTicket.DataAccess.Abstract;
+using VirtualTicket.DataAccess.Concrete.EntityFramework.Contexts;
+using VirtualTicket.Entities.Concrete;
+
+namespace VirtualTicket.DataAccess.Concrete.EntityFramework
+{
+    public class EfXQPreferenceDal : EfEntityRepositoryBase<xQPreference, XQContext>, IXQPreferenceDal
+    {
+
+    }
+}

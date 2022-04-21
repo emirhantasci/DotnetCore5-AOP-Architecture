@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Experimental.System.Messaging" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EmirApi.Core\EmirApi.Core.csproj" />
+    <ProjectReference Include="..\EmirApi.DataAccess\EmirApi.DataAccess.csproj" />
+    <ProjectReference Include="..\EmirApi.Entities\EmirApi.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

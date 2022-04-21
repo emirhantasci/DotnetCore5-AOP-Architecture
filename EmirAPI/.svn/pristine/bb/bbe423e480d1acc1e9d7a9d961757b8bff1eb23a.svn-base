@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace VirtualTicket.Agent.Constants
+{
+    public static class Constants
+    {
+
+        public const string Log4netConfigFileName = "log4net.config";
+    }
+}

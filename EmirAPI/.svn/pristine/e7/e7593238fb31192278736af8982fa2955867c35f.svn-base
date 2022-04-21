@@ -1,0 +1,44 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VirtualTicket.Entities.Concrete;
+using VirtualTicket.Helper;
+using VirtualTicket.Entities.Concrete;
+
+namespace VirtualTicket.DataAccess.Concrete.EntityFramework.Contexts
+{
+    public class XQContext : DbContext
+    {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+            string useEncryption = CommonHelper.GetUseEncryptionFromRegistery();
+            string xQConnectionString = "";
+            if (useEncryption == "1")
+            {
+
+                xQConnectionString = CryptologyHelper.DecryptAES256(configuration.GetConnectionString("XQConnection"));
+            }
+            if (useEncryption == "0")
+            {
+                xQConnectionString = configuration.GetConnectionString("XQConnection");
+            }
+
+
+            optionsBuilder.UseSqlServer(xQConnectionString);
+        }
+       
+        public DbSet<xQPreference> xQPreferences { get; set; }
+       
+
+
+    }
+}

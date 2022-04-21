@@ -1,0 +1,49 @@
+﻿using SubcribOrderRequeQueue.Concreat;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VirtualTicket.Agent.Helper;
+using VirtualTicket.Agent.Utility;
+
+namespace VirtualTicket.Agent.Concreat
+{
+    public class AgentServiceHost
+    {
+         Processor _processor;
+        ILogger _logger;
+        CommonHelper _commonHelper;
+        public void Start()
+        {
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(CurrentDomain_ProcessExit);
+            _logger = new Logger();
+            _commonHelper = new CommonHelper(_logger);
+            _processor = new Processor(_commonHelper);
+            _processor.Start();
+            _commonHelper.LogInfo("Agent Started");
+        }
+        void CurrentDomain_ProcessExit(object sender, EventArgs e)
+        {
+            Stop();
+        }
+        public void Stop()
+        {
+            _commonHelper.LogInfo("Agent Stopped");
+            _processor.Stop();
+
+        }
+        private void LogInfo(string Message)
+        {
+            _commonHelper.LogInfo(Message); ;
+        }
+        private void LogError(string Message)
+        {
+            _commonHelper.LogError(Message); ;
+        }
+        private void LogDebug(string Message)
+        {
+            _commonHelper.LogDebug(Message); ;
+        }
+    }
+}

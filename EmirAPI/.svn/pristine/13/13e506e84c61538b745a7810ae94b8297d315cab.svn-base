@@ -1,0 +1,15 @@
+function CreateQueue(
+    [string] $queueName,
+    [string] $queueType = 'Private'
+) {
+    New-MsmqQueue -Name $queueName -QueueType $queueType -Transactional
+}   
+
+
+$i=1
+for(;$i -le 2;$i++)
+{
+CreateQueue -queueName  $i.ToString()
+ }
+
+	
